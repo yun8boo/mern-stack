@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import authRouter from './routers/auth'
+import userRouter from './routers/users'
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ const PORT = 8800
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
 
 app.listen(PORT, () => {
   console.log('server is running');
