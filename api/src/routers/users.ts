@@ -40,6 +40,47 @@ router.delete('/:id', verifyToken, async(req: Request, res) => {
   }
 })
 
+// get all
+router.get('/', verifyToken, async(req: Request, res) => {
+  const query = req.query.new
+  if(req.user.isAdmin) {
+    try {
+      const users = query ? await UserModel.find().sort({_id: -1}).limit(10) : await UserModel.find()
+      const userInfos = users.map((user: any) => {
+        const { password, ...info} = user._doc
+        return info
+      })
+  
+      res.status(200).json(userInfos)
+    } catch (err) {
+      res.status(500).json(err)
+    }
+  }else {
+    res.status(403).json('You can not allowed to see all users!')
+  }
+})
+// get user stats
+router.get('/stats', async(req, res) => {
+  try {
+    const data = await UserModel.aggregate([
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json(data)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+})
+
 // get
 router.get('/:id', verifyToken, async(req: Request, res) => {
   try {
@@ -51,24 +92,5 @@ router.get('/:id', verifyToken, async(req: Request, res) => {
   }
 })
 
-// get all
-router.get('/', verifyToken, async(req: Request, res) => {
-  if(req.user.isAdmin) {
-    try {
-      const users = await UserModel.find()
-      const userInfos = users.map((user: any) => {
-        const { password, ...info} = user._doc
-        return info
-      })
-  
-      res.status(200).json(userInfos)
-    } catch (err) {
-      res.status(500).json(err)
-    }
-  }else {
-    res.status(403).json('You can delete only your account!')
-  }
-})
-// get user stats
 
 export default router
