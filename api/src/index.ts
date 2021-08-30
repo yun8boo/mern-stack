@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import authRouter from './routers/auth'
 import userRouter from './routers/users'
 import movieRouter from './routers/movies'
+import listRouter from './routers/lists'
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
 app.use('/api/movies', movieRouter)
+app.use('/api/lists', listRouter)
 
 app.listen(PORT, () => {
   console.log('server is running');
