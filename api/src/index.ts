@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import authRouter from './routers/auth'
 import userRouter from './routers/users'
+import movieRouter from './routers/movies'
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.use(express.json())
 
 app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
+app.use('/api/movies', movieRouter)
 
 app.listen(PORT, () => {
   console.log('server is running');
