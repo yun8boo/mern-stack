@@ -6,6 +6,8 @@ import userRouter from './routers/users'
 import movieRouter from './routers/movies'
 import listRouter from './routers/lists'
 
+const PORT = 8800
+
 dotenv.config()
 
 mongoose.connect(process.env.MONGO_URL as string, {
@@ -15,8 +17,6 @@ mongoose.connect(process.env.MONGO_URL as string, {
 }).then(() => console.log('db connect')).catch(e => console.log(e))
 
 const app = express()
-
-const PORT = 8800
 
 app.use(express.json())
 
